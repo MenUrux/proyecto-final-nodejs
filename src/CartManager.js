@@ -77,8 +77,13 @@ class CartManager {
         return newCart;
     }
 
+
     async getCart(id) {
-        return this.carts.find(cart => cart.id === parseInt(id, 10));  // Modificación aquí para la comparación
+        return this.carts.find(cart => cart.id === id) || null;
+    }
+
+    async getCarts() {
+        return this.carts;
     }
 
 }
