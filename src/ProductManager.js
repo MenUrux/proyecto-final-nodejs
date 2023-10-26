@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+const fs = require("fs");
 
 class Product {
     constructor(id, title, description, price, status, thumbnail, code, stock) {
@@ -23,18 +23,25 @@ class ProductManager {
     }
 
     async save() {
-        const content = JSON.stringify(this.products, null, "\t");
-        try {
-            console.log('[save]\tEscribiendo contenido en el path', this.path);
-            await fs.writeFile(this.path, content, "utf-8");
-        } catch (error) {
-            console.error('[save]\tHa ocurrido un error: ', error);
+        if (!this.products) {
+            console.log('[save]\tthis.carts undefined.');   // Modificación aquí
+            return;
         }
+
+        const content = JSON.stringify(this.products, null, "\t");  // Modificación aquí
+        try {
+            console.log('[save]\tEscribiendo contenido en el path CART', this.path);
+            await fs.promises.writeFile(this.path, content, "utf-8");
+        } catch (error) {
+            console.log('[save]\tHa ocurrido un error: ', error);
+        }
+
+
     }
 
     async load() {
         try {
-            const jsonToArray = await fs.readFile(this.path, "utf-8");
+            const jsonToArray = await fs.promises.readFile(this.path, "utf-8");
             this.products = JSON.parse(jsonToArray);
             console.log("[load]\tDatos cargados:", this.products);
 

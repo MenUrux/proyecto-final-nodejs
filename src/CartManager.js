@@ -11,13 +11,13 @@ class CartManager {
     constructor() {
         this.carts = [];
         this.path = './carts-data.json';
-        this.nextId = 1;  // Inicializar nextId aquí
+        this.nextId = 1;
         this.load();
     }
 
     async save() {
         if (!this.carts) {   // Modificación aquí
-            console.log('[save]\tthis.carts is undefined. Aborting save operation.');   // Modificación aquí
+            console.log('[save]\tthis.carts undefined.');   // Modificación aquí
             return;
         }
 
@@ -27,6 +27,18 @@ class CartManager {
             await fs.promises.writeFile(this.path, content, "utf-8");
         } catch (error) {
             console.log('[save]\tHa ocurrido un error: ', error);
+        }
+
+
+    }
+
+    async save() {
+        const content = JSON.stringify(this.products, null, "\t");
+        try {
+            console.log('[save]\tEscribiendo contenido en el path', this.path);
+            await fs.promises.writeFile(this.path, content, "utf-8");
+        } catch (error) {
+            console.error('[save]\tHa ocurrido un error: ', error);
         }
     }
 

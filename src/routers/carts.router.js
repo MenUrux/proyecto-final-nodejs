@@ -1,4 +1,7 @@
 const { Router } = require('express');
+const { v4: uuidV4 } = require('uuid');
+
+
 const CartManager = require('../CartManager');
 const ProductManager = require('../ProductManager');
 const pManager = new ProductManager();
@@ -10,14 +13,7 @@ console.log(carts)
 
 const router = Router();
 
-router.post('/carts', async (req, res) => {
-    try {
-        const newCart = cManager.addCart();
-        res.status(201).json(newCart);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al crear el carrito', error: error.message });
-    }
-});
+
 
 
 router.get('/carts/:cid', async (req, res) => {
@@ -79,24 +75,51 @@ router.get("/carts/:cid", async (req, res) => {
     }
 });
 
+// router.post('/carts/:cid/product/:pid', async (req, res) => {
+//     try {
+//         console.log('Ruta accedida: POST /:cid/product/:pid');
+
+//         const { cid, pid } = req.params;
+//         const cart = await cManager.getCart(cid);
+//         const product = await pManager.getProductById(pid);
+//         if (!cart) {
+//             return res.status(404).json({ message: 'Carrito no encontrado' });
+//         }
+//         if (!product) {
+//             return res.status(404).json({ message: 'Producto no encontrado' });
+//         }
+
+//         const updatedCart = await cManager.addProductToCart(cid, pid);
+//         res.status(200).json(updatedCart);
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error al agregar el producto al carrito', error: error.message });
+//     }
+// });
+
 router.post('/carts/:cid/product/:pid', async (req, res) => {
     try {
-        console.log('Ruta accedida: POST /:cid/product/:pid');
-
-        const { cid, pid } = req.params;
-        const cart = await cManager.getCart(cid);
-        const product = await pManager.getProductById(pid);
-        if (!cart) {
-            return res.status(404).json({ message: 'Carrito no encontrado' });
-        }
-        if (!product) {
-            return res.status(404).json({ message: 'Producto no encontrado' });
-        }
+        const body = req.body;
 
         const updatedCart = await cManager.addProductToCart(cid, pid);
         res.status(200).json(updatedCart);
     } catch (error) {
         res.status(500).json({ message: 'Error al agregar el producto al carrito', error: error.message });
+    }
+});
+
+router.post('/carts', async (req, res) => {
+    try {
+
+        const newCart = {
+            id: uuidV4,
+            products: [],
+        }
+
+        // const newCart = cManager.addCart();
+        cManager.addCart(newCart);
+        res.status(201).json(newCart);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al crear el carrito', error: error.message });
     }
 });
 
