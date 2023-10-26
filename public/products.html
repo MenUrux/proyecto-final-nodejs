@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Products</h1>
+    <main class="container">
+
+        <h2>Nuevo producto</h2>
+
+        <form action="/api/products">
+            <input type="text" name="title" required>
+            <input type="text" name="description" required>
+            <input type="number" name="code" required>
+            <input type="number" name="price" required>
+            <input type="status" name="boolean" required value="true">
+            <input type="submit" value="Enviar">
+        </form>
+    </main>
+</body>
+
+</html>
